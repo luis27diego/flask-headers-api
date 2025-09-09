@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comparación Fetch vs cURL</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ccc; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .fetch-col { background-color: #e3f2fd; }
+        .curl-col { background-color: #fff3e0; }
+        .comparison-col { background-color: #f3e5f5; }
+        button { padding: 10px 20px; font-size: 16px; margin: 10px 0; }
+        .loading { color: #666; font-style: italic; }
+        .error { color: #f44336; }
+        .match { color: #4caf50; font-weight: bold; }
+        .different { color: #ff9800; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1em;">
+            <li><a href="/">Ir a Página Principal</a></li>
+            <li><a href="pagina1.html">Ir a Página 1</a></li>
+            <li><a href="pagina2.html">Ir a Página 2</a></li>
+            <li><a href="pagina3.html">Ir a Página 3</a></li>
+            <li><a href="servidores.html">Ver Encabezados de Servidores</a></li>
+        </ul>
+    </nav>
+    <h1>Comparación: Fetch vs cURL</h1>
+    <p>Esta página compara los encabezados obtenidos usando <strong>fetch()</strong> vs <strong>cURL</strong> para los mismos 5 servidores.</p>
+    
+    <button onclick="compararMetodos()">Ejecutar Comparación</button>
+    
+    <div id="resultados"></div>
+
+    <script>
+        const servidores = [
+            'https://www.google.com',
+            'https://www.microsoft.com', 
+            'https://www.wikipedia.org',
+            'https://www.github.com',
+            'https://www.stackoverflow.com'
+        ];
+
+        async function compararMetodos() {
+            const resultadosDiv = document.getElementById('resultados');
+            resultadosDiv.innerHTML = '<p class="loading">Ejecutando comparación...</p>';
+            
+            let tabla = `
+                <table>
+                    <tr>
+                        <th>Servidor</th>
+                        <th class="fetch-col">Fetch - Encabezado Server</th>
+                        <th class="curl-col">cURL - Encabezado Server</th>
+                        <th class="comparison-col">¿Coinciden?</th>
+                        <th>Diferencias Notables</th>
+                    </tr>
+            `;
+            
+            for (const url of servidores) {
+                try {
+                    // Obtener datos con Fetch
+/*                     const fetchResp = await fetch(`http://localhost:5000/api/headers?url=${encodeURIComponent(url)}`);
+ */                    const fetchResp = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
+                        .then(response => {
+                        if (response.ok) return response.json()
+                        throw new Error('Network response was not ok.')
+                        })
+                        .then(data => console.log(data.contents));
+
+                    const fetchData = await fetchResp.json();
+                    
+                    // Obtener datos con cURL  
+                    const curlResp = await fetch(`http://localhost:5000/api/curl-headers?url=${encodeURIComponent(url)}`);
+                    const curlData = await curlResp.json();
+                    
+                    // Extraer header Server
+                    const fetchServer = fetchData.headers?.['Server'] || fetchData.headers?.['server'] || 'No disponible';
+                    const curlServer = curlData.headers?.['Server'] || curlData.headers?.['server'] || 'No disponible';
+                    
+                    // Comparar
+                    const coinciden = fetchServer === curlServer;
+                    const coincidencia = coinciden ? 
+                        '<span class="match">✅ SÍ</span>' : 
+                        '<span class="different">⚠️ NO</span>';
+                    
+                    // Buscar diferencias
+                    let diferencias = [];
+                    const fetchKeys = new Set(Object.keys(fetchData.headers || {}));
+                    const curlKeys = new Set(Object.keys(curlData.headers || {}));
+                    
+                    // Headers solo en fetch
+                    const soloFetch = [...fetchKeys].filter(k => !curlKeys.has(k));
+                    const soloCurl = [...curlKeys].filter(k => !fetchKeys.has(k));
+                    
+                    if (soloFetch.length > 0) diferencias.push(`Solo en Fetch: ${soloFetch.join(', ')}`);
+                    if (soloCurl.length > 0) diferencias.push(`Solo en cURL: ${soloCurl.join(', ')}`);
+                    
+                    tabla += `
+                        <tr>
+                            <td><strong>${url}</strong></td>
+                            <td class="fetch-col">${fetchServer}</td>
+                            <td class="curl-col">${curlServer}</td>
+                            <td class="comparison-col">${coincidencia}</td>
+                            <td>${diferencias.join('<br>') || 'Ninguna diferencia notable'}</td>
+                        </tr>
+                    `;
+                    
+                } catch (error) {
+                    tabla += `
+                        <tr>
+                            <td><strong>${url}</strong></td>
+                            <td class="error">Error</td>
+                            <td class="error">Error</td>
+                            <td class="error">N/A</td>
+                            <td class="error">${error.message}</td>
+                        </tr>
+                    `;
+                }
+            }
+            
+            tabla += '</table>';
+            
+            // Agregar explicación
+            tabla += `
+                <h2>Análisis:</h2>
+                <ul>
+                    <li><strong>Fetch:</strong> Usa la librería <code>requests</code> de Python</li>
+                    <li><strong>cURL:</strong> Herramienta de línea de comandos nativa</li>
+                    <li><strong>Diferencias esperadas:</strong> Algunos headers pueden variar debido a diferentes User-Agents, protocolos, etc.</li>
+                    <li><strong>✅ Coincidencia:</strong> El encabezado Server debería ser igual en ambos métodos</li>
+                    <li><strong>⚠️ Diferencia:</strong> Posibles variaciones debido a configuraciones del servidor</li>
+                </ul>
+            `;
+            
+            resultadosDiv.innerHTML = tabla;
+        }
+    </script>
+</body>
+</html>

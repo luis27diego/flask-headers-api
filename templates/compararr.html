@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Obtener Headers con CORS Anywhere</title>
+</head>
+<body>
+    <nav>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1em;">
+            <li><a href="index">Ir a Página Principal</a></li>
+            <li><a href="pagina1.html">Ir a Página 1</a></li>
+            <li><a href="pagina2.html">Ir a Página 2</a></li>
+            <li><a href="pagina3.html">Ir a Página 3</a></li>        </ul>
+    </nav>
+    <h1>Obtener Headers de una Página</h1>
+    <input type="text" id="urlInput" placeholder="Ingresa una URL (ej: https://github.com)">
+    <button onclick="obtenerHeaders()">Obtener Headers</button>
+    <pre id="resultado"></pre>
+    <p>Se necesita dar click y pedir permiso para usar la proxy</p>
+    <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank">https://cors-anywhere.herokuapp.com/corsdemo</a>
+    <script>
+        async function obtenerHeaders() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) return;
+
+            const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+            try {
+                const response = await fetch(corsProxy + url, { method: 'HEAD' });
+                let headers = '';
+                for (let [key, value] of response.headers.entries()) {
+                    headers += `${key}: ${value}\n`;
+                }
+                document.getElementById('resultado').textContent = headers || 'No se encontraron headers.';
+            } catch (e) {
+                document.getElementById('resultado').textContent = 'Error al obtener headers: ' + e;
+            }
+        }
+    </script>
+</body>
+</html>

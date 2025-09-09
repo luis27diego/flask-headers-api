@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Página 2</title>
+</head>
+<body>
+
+    <nav>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1em;">
+            <li><a href="index.html">Ir a Página Principal</a></li>
+            <li><a href="pagina1.html">Ir a Página 1</a></li>
+            <li><a href="pagina3.html">Ir a Página 3</a></li>
+            <li><a href="compararr.html">Busqueda de headers</a></li>
+
+<!--             <li><a href="servidores.html">Ver Encabezados de Servidores</a></li>
+            <li><a href="comparar.html">Comparar Fetch vs cURL</a></li> -->
+        </ul>
+    </nav>
+    <h1>Página 2</h1>
+    <h1>Encabezados HTTP: La Comunicación Invisible de la Web</h1>
+    
+    <h2>¿Qué son los Encabezados HTTP?</h2>
+    <p>Los encabezados HTTP son campos de metadatos que se envían junto con las solicitudes y respuestas HTTP. Proporcionan información adicional sobre la transacción que está teniendo lugar entre el cliente y el servidor. Estos encabezados son invisibles para el usuario final pero son fundamentales para el correcto funcionamiento de la comunicación web.</p>
+    
+    <h2>Estructura de los Encabezados</h2>
+    <p>Los encabezados HTTP siguen una estructura simple:</p>
+    <p><strong>Nombre-del-Encabezado: Valor</strong></p>
+    <p>Por ejemplo: <code>Content-Type: text/html; charset=UTF-8</code></p>
+    
+    <h2>Tipos de Encabezados HTTP</h2>
+    
+    <h3>Encabezados de Solicitud (Request Headers)</h3>
+    <p>Enviados por el cliente (navegador) al servidor:</p>
+    
+    <h4>Accept</h4>
+    <p><strong>Propósito:</strong> Especifica los tipos de contenido que el cliente puede procesar</p>
+    <p><strong>Ejemplo:</strong> <code>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</code></p>
+    <p><strong>Uso:</strong> El servidor utiliza esta información para determinar qué formato de respuesta enviar</p>
+    
+    <h4>User-Agent</h4>
+    <p><strong>Propósito:</strong> Identifica el navegador y sistema operativo del cliente</p>
+    <p><strong>Ejemplo:</strong> <code>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36</code></p>
+    <p><strong>Uso:</strong> Permite al servidor adaptar el contenido según el cliente (diseño responsivo, compatibilidad)</p>
+    
+    <h4>Authorization</h4>
+    <p><strong>Propósito:</strong> Contiene las credenciales para autenticar al cliente</p>
+    <p><strong>Ejemplo:</strong> <code>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></p>
+    <p><strong>Uso:</strong> Autenticación en APIs y recursos protegidos</p>
+    
+    <h4>Cookie</h4>
+    <p><strong>Propósito:</strong> Envía cookies almacenadas previamente por el servidor</p>
+    <p><strong>Ejemplo:</strong> <code>Cookie: session_id=abc123; theme=dark</code></p>
+    <p><strong>Uso:</strong> Mantener estado de sesión, preferencias del usuario</p>
+    
+    <h3>Encabezados de Respuesta (Response Headers)</h3>
+    <p>Enviados por el servidor al cliente:</p>
+    
+    <h4>Server</h4>
+    <p><strong>Propósito:</strong> Identifica el software del servidor web</p>
+    <p><strong>Ejemplos:</strong></p>
+    <ul>
+        <li><code>Server: Apache/2.4.41 (Ubuntu)</code></li>
+        <li><code>Server: nginx/1.18.0</code></li>
+        <li><code>Server: Microsoft-IIS/10.0</code></li>
+        <li><code>Server: cloudflare</code></li>
+    </ul>
+    <p><strong>Uso:</strong> Información para debugging, estadísticas de mercado</p>
+    
+    <h4>Date</h4>
+    <p><strong>Propósito:</strong> Indica la fecha y hora cuando se generó la respuesta</p>
+    <p><strong>Ejemplo:</strong> <code>Date: Wed, 21 Oct 2015 07:28:00 GMT</code></p>
+    <p><strong>Formato:</strong> Siempre en GMT (Greenwich Mean Time)</p>
+    <p><strong>Uso:</strong> Cacheo, logging, sincronización</p>
+    
+    <h4>Content-Type</h4>
+    <p><strong>Propósito:</strong> Especifica el tipo de contenido y codificación</p>
+    <p><strong>Ejemplos:</strong></p>
+    <ul>
+        <li><code>Content-Type: text/html; charset=UTF-8</code> - Página HTML</li>
+        <li><code>Content-Type: application/json</code> - Datos JSON</li>
+        <li><code>Content-Type: image/png</code> - Imagen PNG</li>
+        <li><code>Content-Type: text/css</code> - Hoja de estilos CSS</li>
+        <li><code>Content-Type: application/javascript</code> - Código JavaScript</li>
+    </ul>
+    <p><strong>Uso:</strong> El navegador usa esta información para saber cómo procesar el contenido</p>
+    
+    <h4>Content-Length</h4>
+    <p><strong>Propósito:</strong> Indica el tamaño del cuerpo de la respuesta en bytes</p>
+    <p><strong>Ejemplo:</strong> <code>Content-Length: 1234</code></p>
+    <p><strong>Uso:</strong> Permite al cliente saber cuántos datos esperar</p>
+    
+    <h4>Set-Cookie</h4>
+    <p><strong>Propósito:</strong> Envía una cookie al cliente para que la almacene</p>
+    <p><strong>Ejemplo:</strong> <code>Set-Cookie: session_id=abc123; Path=/; HttpOnly; Secure</code></p>
+    <p><strong>Atributos importantes:</strong></p>
+    <ul>
+        <li><strong>HttpOnly:</strong> La cookie no es accesible desde JavaScript</li>
+        <li><strong>Secure:</strong> Solo se envía sobre HTTPS</li>
+        <li><strong>SameSite:</strong> Controla cuándo se envía la cookie</li>
+    </ul>
+    
+    <h2>Encabezados de Seguridad</h2>
+    
+    <h3>Content-Security-Policy (CSP)</h3>
+    <p><strong>Propósito:</strong> Define qué recursos puede cargar la página</p>
+    <p><strong>Ejemplo:</strong> <code>Content-Security-Policy: default-src 'self'; script-src 'self' https://apis.google.com</code></p>
+    <p><strong>Beneficio:</strong> Previene ataques XSS (Cross-Site Scripting)</p>
+    
+    <h3>X-Frame-Options</h3>
+    <p><strong>Propósito:</strong> Controla si la página puede ser mostrada en un iframe</p>
+    <p><strong>Valores:</strong></p>
+    <ul>
+        <li><code>DENY</code> - Nunca en iframe</li>
+        <li><code>SAMEORIGIN</code> - Solo en iframe del mismo origen</li>
+        <li><code>ALLOW-FROM uri</code> - Solo desde URI específica</li>
+    </ul>
+    <p><strong>Beneficio:</strong> Previene ataques clickjacking</p>
+    
+    <h3>Strict-Transport-Security (HSTS)</h3>
+    <p><strong>Propósito:</strong> Fuerza el uso de HTTPS</p>
+    <p><strong>Ejemplo:</strong> <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code></p>
+    <p><strong>Beneficio:</strong> Previene ataques man-in-the-middle</p>
+    
+    <h2>Encabezados de Cacheo</h2>
+    
+    <h3>Cache-Control</h3>
+    <p><strong>Propósito:</strong> Controla cómo y por cuánto tiempo se debe cachear el contenido</p>
+    <p><strong>Ejemplos:</strong></p>
+    <ul>
+        <li><code>Cache-Control: no-cache</code> - Siempre validar con el servidor</li>
+        <li><code>Cache-Control: max-age=3600</code> - Cachear por 1 hora</li>
+        <li><code>Cache-Control: public</code> - Puede ser cacheado por cualquier caché</li>
+        <li><code>Cache-Control: private</code> - Solo cachear en el navegador del usuario</li>
+    </ul>
+    
+    <h3>ETag</h3>
+    <p><strong>Propósito:</strong> Identificador único para una versión específica del recurso</p>
+    <p><strong>Ejemplo:</strong> <code>ETag: "33a64df551425fcc55e4d42a148795d9f25f89d4"</code></p>
+    <p><strong>Uso:</strong> El cliente puede enviar <code>If-None-Match</code> para verificar si el recurso ha cambiado</p>
+    
+    <h3>Last-Modified</h3>
+    <p><strong>Propósito:</strong> Indica cuándo fue modificado por última vez el recurso</p>
+    <p><strong>Ejemplo:</strong> <code>Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT</code></p>
+    <p><strong>Uso:</strong> Permite cacheo condicional con <code>If-Modified-Since</code></p>
+    
+    <h2>Encabezados de CORS</h2>
+    
+    <h3>Access-Control-Allow-Origin</h3>
+    <p><strong>Propósito:</strong> Especifica qué orígenes pueden acceder al recurso</p>
+    <p><strong>Ejemplos:</strong></p>
+    <ul>
+        <li><code>Access-Control-Allow-Origin: *</code> - Cualquier origen</li>
+        <li><code>Access-Control-Allow-Origin: https://example.com</code> - Solo este dominio</li>
+    </ul>
+    
+    <h3>Access-Control-Allow-Methods</h3>
+    <p><strong>Propósito:</strong> Especifica qué métodos HTTP están permitidos</p>
+    <p><strong>Ejemplo:</strong> <code>Access-Control-Allow-Methods: GET, POST, PUT, DELETE</code></p>
+    
+    <h2>Encabezados de Compresión</h2>
+    
+    <h3>Accept-Encoding</h3>
+    <p><strong>Propósito:</strong> Indica qué algoritmos de compresión acepta el cliente</p>
+    <p><strong>Ejemplo:</strong> <code>Accept-Encoding: gzip, deflate, br</code></p>
+    
+    <h3>Content-Encoding</h3>
+    <p><strong>Propósito:</strong> Indica qué compresión se aplicó al contenido</p>
+    <p><strong>Ejemplo:</strong> <code>Content-Encoding: gzip</code></p>
+    
+    <h2>Códigos de Estado HTTP Relacionados</h2>
+    <p>Los encabezados trabajan junto con códigos de estado:</p>
+    <ul>
+        <li><strong>200 OK:</strong> Solicitud exitosa</li>
+        <li><strong>304 Not Modified:</strong> Recurso no ha cambiado (usado con encabezados de cacheo)</li>
+        <li><strong>401 Unauthorized:</strong> Requiere autenticación (usado con WWW-Authenticate)</li>
+        <li><strong>403 Forbidden:</strong> Acceso denegado</li>
+        <li><strong>404 Not Found:</strong> Recurso no encontrado</li>
+        <li><strong>500 Internal Server Error:</strong> Error del servidor</li>
+    </ul>
+    
+    <h2>Herramientas para Inspeccionar Encabezados</h2>
+    <ul>
+        <li><strong>Herramientas de desarrollador del navegador:</strong> F12 → Network</li>
+        <li><strong>cURL:</strong> <code>curl -I https://example.com</code></li>
+        <li><strong>Postman:</strong> Cliente gráfico para APIs</li>
+        <li><strong>HTTPie:</strong> Cliente HTTP desde línea de comandos</li>
+        <li><strong>Online tools:</strong> Redbot.org, web-sniffer.net</li>
+    </ul>
+    
+    <h2>Buenas Prácticas</h2>
+    <ul>
+        <li><strong>Seguridad:</strong> Always use security headers in production</li>
+        <li><strong>Performance:</strong> Configure proper caching headers</li>
+        <li><strong>Compression:</strong> Enable gzip/brotli compression</li>
+        <li><strong>HTTPS:</strong> Always use HTTPS in production</li>
+        <li><strong>Monitoring:</strong> Log and monitor important headers</li>
+    </ul>
+    
+    <p><em>Los encabezados HTTP son el lenguaje invisible que permite que navegadores y servidores se comuniquen eficientemente, proporcionando funcionalidades esenciales como seguridad, cacheo, autenticación y optimización del rendimiento.</em></p>
+</body>
+</html>

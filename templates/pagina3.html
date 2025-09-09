@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Página 3</title>
+</head>
+<body>
+    <nav>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1em;">
+            <li><a href="index.html">Ir a Página Principal</a></li>
+            <li><a href="pagina1.html">Ir a Página 1</a></li>
+            <li><a href="pagina2.html">Ir a Página 2</a></li>
+            <li><a href="compararr.html">Busqueda de headers</a></li>
+
+<!--             <li><a href="servidores.html">Ver Encabezados de Servidores</a></li>
+            <li><a href="comparar.html">Comparar Fetch vs cURL</a></li> -->
+        </ul>
+    </nav>
+    
+    <h1>Herramientas de Análisis Web: cURL, Fetch y Más</h1>
+    
+    <h2>¿Por qué Varían los Encabezados?</h2>
+    <p>Los encabezados HTTP pueden variar significativamente dependiendo de múltiples factores. Esta variación no es un error, sino una característica intencional del protocolo HTTP que permite a servidores y clientes adaptarse a diferentes contextos y necesidades.</p>
+    
+    <h2>Factores que Influyen en los Encabezados</h2>
+    
+    <h3>User-Agent</h3>
+    <p>El encabezado User-Agent es uno de los principales factores que causa variaciones:</p>
+    <ul>
+        <li><strong>Navegadores diferentes:</strong> Chrome, Firefox, Safari, Edge envían User-Agents distintos</li>
+        <li><strong>Versiones:</strong> Cada versión del navegador reporta información diferente</li>
+        <li><strong>Sistemas operativos:</strong> Windows, macOS, Linux, móvil influyen en el User-Agent</li>
+        <li><strong>Herramientas:</strong> cURL, wget, Python requests tienen sus propios User-Agents</li>
+    </ul>
+    
+    <h4>Ejemplos de User-Agents:</h4>
+    <ul>
+        <li><strong>Chrome:</strong> <code>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36</code></li>
+        <li><strong>cURL:</strong> <code>curl/7.68.0</code></li>
+        <li><strong>Python requests:</strong> <code>python-requests/2.25.1</code></li>
+        <li><strong>Mobile Safari:</strong> <code>Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15</code></li>
+    </ul>
+    
+    <h3>Adaptación del Servidor</h3>
+    <p>Los servidores pueden responder diferente basándose en el cliente:</p>
+    <ul>
+        <li><strong>Contenido optimizado:</strong> Versión móvil vs escritorio</li>
+        <li><strong>Compresión:</strong> Diferentes algoritmos según capacidades del cliente</li>
+        <li><strong>Formato de respuesta:</strong> HTML, JSON, XML según Accept headers</li>
+        <li><strong>Funcionalidades:</strong> JavaScript moderno vs fallbacks para navegadores antiguos</li>
+    </ul>
+    
+    <h2>cURL: La Herramienta Universal</h2>
+    
+    <h3>¿Qué es cURL?</h3>
+    <p>cURL (Client URL) es una herramienta de línea de comandos y biblioteca para transferir datos con servidores, utilizando diversos protocolos como HTTP, HTTPS, FTP, SFTP, y muchos más. Desarrollada por Daniel Stenberg desde 1997, es ampliamente utilizada en sistemas Unix/Linux y está disponible para todas las plataformas.</p>
+    
+    <h3>Ventajas de cURL:</h3>
+    <ul>
+        <li><strong>Universalidad:</strong> Disponible en prácticamente todos los sistemas</li>
+        <li><strong>Flexibilidad:</strong> Soporte para múltiples protocolos</li>
+        <li><strong>Control total:</strong> Permite personalizar cada aspecto de la solicitud</li>
+        <li><strong>Scriptable:</strong> Ideal para automatización y scripts</li>
+        <li><strong>Debugging:</strong> Excelente para diagnóstico de problemas</li>
+        <li><strong>Sin dependencias:</strong> No requiere navegador o entorno gráfico</li>
+    </ul>
+    
+    <h3>Comandos cURL Esenciales:</h3>
+    
+    <h4>Solicitudes Básicas:</h4>
+    <ul>
+        <li><code>curl https://example.com</code> - GET básico</li>
+        <li><code>curl -I https://example.com</code> - Solo encabezados (HEAD)</li>
+        <li><code>curl -v https://example.com</code> - Modo verboso (muestra headers)</li>
+        <li><code>curl -L https://example.com</code> - Seguir redirects</li>
+    </ul>
+    
+    <h4>Personalizar Encabezados:</h4>
+    <ul>
+        <li><code>curl -H "User-Agent: MiApp/1.0" https://example.com</code></li>
+        <li><code>curl -H "Accept: application/json" https://api.example.com</code></li>
+        <li><code>curl -H "Authorization: Bearer token123" https://api.example.com</code></li>
+    </ul>
+    
+    <h4>Métodos HTTP:</h4>
+    <ul>
+        <li><code>curl -X POST https://example.com</code> - POST request</li>
+        <li><code>curl -X PUT -d '{"key":"value"}' https://example.com</code> - PUT con datos</li>
+        <li><code>curl -X DELETE https://example.com/resource/123</code> - DELETE request</li>
+        <li><code>curl -X PATCH -d '{"update":"value"}' https://example.com</code> - PATCH request</li>
+    </ul>
+    
+    <h4>Autenticación:</h4>
+    <ul>
+        <li><code>curl -u username:password https://example.com</code> - Basic Auth</li>
+        <li><code>curl -H "Authorization: Bearer token" https://example.com</code> - Bearer Token</li>
+        <li><code>curl --cert client.crt --key client.key https://example.com</code> - Client Certificate</li>
+    </ul>
+    
+    <h4>Cookies y Sesiones:</h4>
+    <ul>
+        <li><code>curl -c cookies.txt https://example.com</code> - Guardar cookies</li>
+        <li><code>curl -b cookies.txt https://example.com</code> - Usar cookies guardadas</li>
+        <li><code>curl -b "session=abc123" https://example.com</code> - Cookie específica</li>
+    </ul>
+    
+    <h2>Fetch API: El Moderno Estándar Web</h2>
+    
+    <h3>¿Qué es Fetch?</h3>
+    <p>Fetch API es la interfaz moderna de JavaScript para realizar solicitudes HTTP, reemplazando a XMLHttpRequest. Introducida como estándar web, proporciona una interfaz más poderosa y flexible para realizar solicitudes de red desde navegadores web.</p>
+    
+    <h3>Características de Fetch:</h3>
+    <ul>
+        <li><strong>Basado en Promises:</strong> Integración natural con async/await</li>
+        <li><strong>Más limpio:</strong> API más intuitiva que XMLHttpRequest</li>
+        <li><strong>Streaming:</strong> Soporte nativo para streams</li>
+        <li><strong>Service Workers:</strong> Funciona en Service Workers</li>
+        <li><strong>CORS friendly:</strong> Manejo más claro de CORS</li>
+    </ul>
+    
+    <h3>Limitaciones de Fetch vs cURL:</h3>
+    <ul>
+        <li><strong>Entorno:</strong> Solo funciona en navegadores/Node.js</li>
+        <li><strong>CORS:</strong> Limitado por políticas del navegador</li>
+        <li><strong>Cookies:</strong> Sujeto a políticas de cookies del navegador</li>
+        <li><strong>Protocolos:</strong> Solo HTTP/HTTPS (cURL soporta FTP, SMTP, etc.)</li>
+        <li><strong>Certificados:</strong> No puede ignorar errores SSL como cURL</li>
+    </ul>
+    
+    <h3>Ejemplos de Fetch:</h3>
+    
+    <h4>Solicitud Básica:</h4>
+    <pre><code>
+        fetch('https://api.example.com/data')
+        .then(response => response.json())
+        .then(data => console.log(data));
+    </code></pre>
+    
+    <h4>Con Configuración Avanzada:</h4>
+    <pre><code>
+        fetch('https://api.example.com/data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer token123',
+            'User-Agent': 'MiApp/1.0'
+        },
+        body: JSON.stringify({key: 'value'})
+        })
+        .then(response => response.json());
+    </code></pre>
+    
+    <h2>Comparación Detallada: cURL vs Fetch</h2>
+    
+    <table border="1">
+        <tr>
+            <th>Aspecto</th>
+            <th>cURL</th>
+            <th>Fetch API</th>
+        </tr>
+        <tr>
+            <td><strong>Entorno de Ejecución</strong></td>
+            <td>Línea de comandos, scripts, cualquier OS</td>
+            <td>Navegadores web, Node.js</td>
+        </tr>
+        <tr>
+            <td><strong>Protocolos Soportados</strong></td>
+            <td>HTTP, HTTPS, FTP, SFTP, SMTP, etc.</td>
+            <td>HTTP, HTTPS únicamente</td>
+        </tr>
+        <tr>
+            <td><strong>Personalización User-Agent</strong></td>
+            <td>Completa libertad</td>
+            <td>Limitado por el navegador</td>
+        </tr>
+        <tr>
+            <td><strong>Manejo de Cookies</strong></td>
+            <td>Control total, archivo de cookies</td>
+            <td>Automático, sujeto a políticas</td>
+        </tr>
+        <tr>
+            <td><strong>CORS</strong></td>
+            <td>No aplica, bypass total</td>
+            <td>Estrictamente aplicado</td>
+        </tr>
+        <tr>
+            <td><strong>SSL/TLS</strong></td>
+            <td>Puede ignorar errores de certificado</td>
+            <td>Validación estricta</td>
+        </tr>
+        <tr>
+            <td><strong>Automatización</strong></td>
+            <td>Ideal para scripts y CI/CD</td>
+            <td>Solo dentro de aplicaciones web</td>
+        </tr>
+        <tr>
+            <td><strong>Debugging</strong></td>
+            <td>Excelente con -v, --trace</td>
+            <td>Developer Tools del navegador</td>
+        </tr>
+    </table>
+</body>
+</html>

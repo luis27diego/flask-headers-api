@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Encabezados de Servidores Web</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1em;">
+            <li><a href="/">Ir a Página Principal</a></li>
+            <li><a href="pagina1.html">Ir a Página 1</a></li>
+            <li><a href="pagina2.html">Ir a Página 2</a></li>
+            <li><a href="pagina3.html">Ir a Página 3</a></li>
+            <li><a href="comparar.html">Comparar Fetch vs cURL</a></li>
+        </ul>
+    </nav>
+    <h1>Encabezados de Servidores Web</h1>
+    <p>Esta página muestra los encabezados HTTP obtenidos de varios servidores web populares.</p>
+    <button onclick="listarEncabezados()">Listar Encabezados</button>
+    <div id="resultados"></div>
+    <script>
+        const servidores = [
+            'https://www.google.com',
+            'https://www.microsoft.com',
+            'https://www.wikipedia.org',
+            'https://www.github.com',
+            'https://www.stackoverflow.com'
+        ];
+
+        async function listarEncabezados() {
+            const resultadosDiv = document.getElementById('resultados');
+            resultadosDiv.innerHTML = '<p>Cargando...</p>';
+            let tabla = '<table><tr><th>Servidor</th><th>Encabezado Server</th><th>Todos los Encabezados</th></tr>';
+            for (const url of servidores) {
+                try {
+                    const resp = await fetch(`http://localhost:5000/api/headers?url=${encodeURIComponent(url)}`);
+                    const data = await resp.json();
+                    
+                    if (data.headers) {
+                        const serverHeader = data.headers['Server'] || data.headers['server'] || 'No disponible';
+                        let headersList = '<ul>';
+                        for (const [k, v] of Object.entries(data.headers)) {
+                            headersList += `<li><b>${k}:</b> ${v}</li>`;
+                        }
+                        headersList += '</ul>';
+                        tabla += `<tr><td>${url}</td><td>${serverHeader}</td><td>${headersList}</td></tr>`;
+                    } else {
+                        tabla += `<tr><td>${url}</td><td colspan='2'>Error: ${data.error || 'Desconocido'}</td></tr>`;
+                    }
+                } catch (e) {
+                    tabla += `<tr><td>${url}</td><td colspan='2'>Error al obtener</td></tr>`;
+                }
+            }
+            tabla += '</table>';
+            resultadosDiv.innerHTML = tabla;
+        }
+    </script>
+</body>
+</html>
