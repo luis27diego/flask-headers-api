@@ -2,7 +2,7 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 from flask_cors import CORS
-#import subprocess
+import subprocess
 
 app = Flask(__name__, template_folder='templates')
 CORS(app)  # Permite CORS para la API, pero no es necesario para servir HTML
@@ -44,7 +44,7 @@ def get_headers():
         return jsonify({'error': str(e)}), 500
     
     
-""" # Agregar este nuevo endpoint a tu proxy.py
+# Agregar este nuevo endpoint a tu proxy.py
 @app.route('/api/curl-headers')
 def get_curl_headers():
     url = request.args.get('url')
@@ -96,7 +96,7 @@ def get_curl_headers():
     except subprocess.TimeoutExpired:
         return jsonify({'error': 'cURL timeout'}), 500
     except Exception as e:
-        return jsonify({'error': f'Error ejecutando cURL: {str(e)}'}), 500 """
+        return jsonify({'error': f'Error ejecutando cURL: {str(e)}'}), 500 
 
 if __name__ == '__main__':
     app.run(debug=True)
