@@ -21,11 +21,10 @@
 <body>
     <nav>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 1em;">
-            <li><a href="/">Ir a Página Principal</a></li>
+            <li><a href="index.html">Ir a Página Principal</a></li>
             <li><a href="pagina1.html">Ir a Página 1</a></li>
             <li><a href="pagina2.html">Ir a Página 2</a></li>
             <li><a href="pagina3.html">Ir a Página 3</a></li>
-            <li><a href="servidores.html">Ver Encabezados de Servidores</a></li>
         </ul>
     </nav>
     <h1>Comparación: Fetch vs cURL</h1>
@@ -62,18 +61,13 @@
             for (const url of servidores) {
                 try {
                     // Obtener datos con Fetch
-/*                     const fetchResp = await fetch(`http://localhost:5000/api/headers?url=${encodeURIComponent(url)}`);
- */                    const fetchResp = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
-                        .then(response => {
-                        if (response.ok) return response.json()
-                        throw new Error('Network response was not ok.')
-                        })
-                        .then(data => console.log(data.contents));
+                    const fetchResp = await fetch(`https://flask-headers-api.onrender.com/api/headers?url=${encodeURIComponent(url)}`);
+
 
                     const fetchData = await fetchResp.json();
                     
                     // Obtener datos con cURL  
-                    const curlResp = await fetch(`http://localhost:5000/api/curl-headers?url=${encodeURIComponent(url)}`);
+                    const curlResp = await fetch(`https://flask-headers-api.onrender.com/api/curl-headers?url=${encodeURIComponent(url)}`);
                     const curlData = await curlResp.json();
                     
                     // Extraer header Server
